@@ -1,5 +1,17 @@
 { config, pkgs, ... }:
 
+let
+  # Upstream nixpkgs pre-commit runs a huge check suite (dotnet, cargo, go, node, …) and even
+  # references dotnet-sdk in preCheck; that pulls dotnet-vmr and can build for hours. Skip checks.
+  pre-commit-light = pkgs.pre-commit.overridePythonAttrs (old: {
+    doCheck = false;
+    # pytest-check-hook ignores doCheck; this actually skips pytestCheckPhase (see nixpkgs pytest-check-hook.sh).
+    dontUsePytestCheck = true;
+    nativeCheckInputs = [ ];
+    preCheck = "";
+    postCheck = "";
+  });
+in
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -52,9 +64,6 @@
     cloud = [
       auth0-cli
       awscli2
-      azure-cli
-      databricks-cli
-      fluxcd
       kubernetes-helm
       kubectl
       kubectx
@@ -80,7 +89,7 @@
     # Nix stuff
     nix = [
       cachix
-    ]; 
+    ];
 
     # Haskell
     haskell = [
@@ -96,7 +105,7 @@
       pdm
       pipenv
       (poetry.withPlugins (p: [ p.poetry-plugin-export ]))
-      pre-commit
+      pre-commit-light
       pyenv
       pyright
       tenv
@@ -109,7 +118,6 @@
       bfg-repo-cleaner
       chromedriver
       claude-code
-      code-cursor
       commitizen
       direnv
       esphome
@@ -120,7 +128,6 @@
       neovim
       prettierd
       vim
-      vscode
     ];
 
     # Git & version control
@@ -175,7 +182,6 @@
       goose-cli
       ngrok
       ollama
-      temporal-cli
       wimlib
       yarn
     ];

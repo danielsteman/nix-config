@@ -76,6 +76,7 @@
   in
   {
     darwinConfigurations."${username}" = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
       modules = [
         configuration
         home-manager.darwinModules.home-manager
