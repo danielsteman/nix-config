@@ -46,7 +46,8 @@
     };
   };
 
-  # User-specific packages organized by category
+  # User packages from nixpkgs (preferred source)
+  # For packages NOT in nixpkgs, add them to homebrew.brews/casks in flake.nix
   home.packages = with pkgs; let
     # Cloud & Infrastructure tools
     cloud = [
