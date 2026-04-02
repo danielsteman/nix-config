@@ -115,6 +115,7 @@
       gitmoji-cli
       neovim
       prettierd
+      supabase-cli
       vim
     ];
 
