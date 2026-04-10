@@ -100,7 +100,7 @@
       system.keyboard.enableKeyMapping = true;
 
       system.defaults.NSGlobalDomain.AppleInterfaceStyle = "Dark";
-      system.defaults.NSGlobalDomain._HIHideMenuBar = true;
+      system.defaults.NSGlobalDomain._HIHideMenuBar = false;
 
     };
 
