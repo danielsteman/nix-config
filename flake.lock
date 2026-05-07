@@ -69,6 +69,22 @@
         "type": "github"
       }
     },
+    "homebrew-databricks": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778149475,
+        "narHash": "sha256-I0vXA7L8qrU35wVlZZzewiRxr1ECbzpqn7Auh+GsaLs=",
+        "owner": "databricks",
+        "repo": "homebrew-tap",
+        "rev": "6ea625ff1e20495efde2138ee42c8a8b03dcbcf6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "databricks",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "homebrew-dotenvx": {
       "flake": false,
       "locked": {
@@ -145,6 +161,7 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-databricks": "homebrew-databricks",
         "homebrew-dotenvx": "homebrew-dotenvx",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",

@@ -26,9 +26,13 @@
       url = "github:dotenvx/homebrew-brew";
       flake = false;
     };
+    homebrew-databricks = {
+      url = "github:databricks/homebrew-tap";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-dotenvx }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-dotenvx, homebrew-databricks }:
   let
     lib = nixpkgs.lib;
     username = "danielsteman";
@@ -47,7 +51,8 @@
           cleanup = "zap";  # Remove unlisted formulae/casks
         };
         brews = [
-          "dotenvx"  # Not in nixpkgs
+          "databricks" # Databricks CLI (tap: databricks/tap)
+          "dotenvx" # Not in nixpkgs
         ];
         casks = [
           # macOS apps not in nixpkgs go here
@@ -106,7 +111,9 @@
 
     # nix-homebrew tap paths use .../homebrew-<name>; brew tap names are shorter (e.g. dotenvx/brew).
     nixHomebrewTapToBrewTap = tapPath:
-      if tapPath == "dotenvx/homebrew-brew" then "dotenvx/brew" else tapPath;
+      if tapPath == "dotenvx/homebrew-brew" then "dotenvx/brew"
+      else if tapPath == "databricks/homebrew-tap" then "databricks/tap"
+      else tapPath;
 
     nix-homebrew-module = {
       nix-homebrew = {
@@ -117,6 +124,7 @@
         taps = {
           "homebrew/homebrew-core" = homebrew-core;
           "homebrew/homebrew-cask" = homebrew-cask;
+          "databricks/homebrew-tap" = homebrew-databricks;
           "dotenvx/homebrew-brew" = homebrew-dotenvx;
         };
       };
