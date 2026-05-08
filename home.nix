@@ -129,6 +129,7 @@
     containers = [
       colima
       docker
+      lima
       process-compose
     ];
 
