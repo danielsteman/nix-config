@@ -57,7 +57,6 @@
       kubectl
       kubectx
       kind
-      packer
       trivy
     ];
 
