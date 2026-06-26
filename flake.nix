@@ -40,7 +40,7 @@
     configuration = { pkgs, ... }: {
       nixpkgs.config.allowUnfree = true;
 
-      environment.systemPackages = with pkgs; [];
+      environment.systemPackages = with pkgs; [ dnsmasq ];
 
       # Homebrew packages (only for things not in nixpkgs)
       # nix-homebrew handles brew installation itself - no manual install needed
@@ -57,6 +57,17 @@
         casks = [
           # macOS apps not in nixpkgs go here
         ];
+      };
+
+      # Resolve *.mcphost.localhost → 127.0.0.1 for local full-stack dev.
+      environment.etc."dnsmasq-mcphost.conf".text = "address=/.mcphost.localhost/127.0.0.1\n";
+      environment.etc."resolver/mcphost.localhost".text = "nameserver 127.0.0.1\n";
+      launchd.daemons.dnsmasq = {
+        serviceConfig = {
+          ProgramArguments = [ "/run/current-system/sw/bin/dnsmasq" "--keep-in-foreground" "--conf-file=/etc/dnsmasq-mcphost.conf" ];
+          RunAtLoad = true;
+          KeepAlive = true;
+        };
       };
 
       nix.enable = false;

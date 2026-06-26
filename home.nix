@@ -159,7 +159,6 @@
     # GUI applications
     guiApps = [
       aerospace
-      firefox
       kitty
       monitorcontrol
       raycast
