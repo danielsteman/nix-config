@@ -92,6 +92,7 @@
       mypy
       pdm
       pipenv
+      pipx
       (poetry.withPlugins (p: [ p.poetry-plugin-export ]))
       pyenv
       pyright
@@ -113,6 +114,7 @@
       gh-dash
       gitmoji-cli
       neovim
+      pnpm
       prettierd
       supabase-cli
       vim
