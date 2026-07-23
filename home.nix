@@ -94,7 +94,6 @@
       pipenv
       pipx
       (poetry.withPlugins (p: [ p.poetry-plugin-export ]))
-      pyenv
       pyright
       tenv
       uv
