@@ -39,6 +39,44 @@
 
     configuration = { pkgs, ... }: {
       nixpkgs.config.allowUnfree = true;
+      nixpkgs.overlays = [
+        # commitizen's test suite fails to build under python3.14 (argparse error-message
+        # format changed); skip its checks rather than waiting on a nixpkgs fix.
+        (final: prev: {
+          commitizen = prev.commitizen.overridePythonAttrs (_: { doCheck = false; });
+        })
+        # lima fails to compile from source on this machine: its Go build crashes
+        # nixpkgs' cctools linker (Trace/BPT trap) on the current toolchain. Use
+        # upstream's prebuilt, already-entitlement-signed release binary instead.
+        (final: prev: {
+          lima = final.stdenvNoCC.mkDerivation {
+            pname = "lima";
+            version = "2.1.4";
+            src = final.fetchzip {
+              url = "https://github.com/lima-vm/lima/releases/download/v2.1.4/lima-2.1.4-Darwin-arm64.tar.gz";
+              hash = "sha256-VLWiw0cvme0+wDd8f1C67hBe5d1jtwo9t6kWyJckjhI=";
+              stripRoot = false;
+            };
+            dontBuild = true;
+            # Any post-link mangling (stripping, install_name_tool rpath edits, etc.) voids the
+            # upstream ad-hoc codesign + Virtualization.framework entitlements on the binary.
+            dontStrip = true;
+            dontFixup = true;
+            nativeBuildInputs = [ final.makeWrapper ];
+            installPhase = ''
+              runHook preInstall
+              mkdir -p $out
+              cp -r bin libexec share $out/
+              wrapProgram $out/bin/limactl --prefix PATH : ${final.lib.makeBinPath [ final.qemu ]}
+              runHook postInstall
+            '';
+            meta = prev.lima.meta // { mainProgram = "limactl"; };
+          };
+          # lima-full normally calls `lima.override {...}`, which our plain derivation above
+          # doesn't support. colima only needs limactl on PATH, not the extra guest agents.
+          lima-full = final.lima;
+        })
+      ];
 
       environment.systemPackages = with pkgs; [ dnsmasq ];
 
@@ -74,6 +112,9 @@
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
+
+      # Save the disk
+      nix.settings.auto-optimise-store = true;
 
       # Set primary user
       system.primaryUser = username;
@@ -142,7 +183,12 @@
     };
 
     homebrew-taps-from-nix-homebrew = { config, ... }: {
-      homebrew.taps = map nixHomebrewTapToBrewTap (builtins.attrNames config.nix-homebrew.taps);
+      # trusted = true satisfies Homebrew 6.0's HOMEBREW_REQUIRE_TAP_TRUST during
+      # activation, avoiding a manual `brew trust <tap>` before every build.
+      homebrew.taps = map (tapPath: {
+        name = nixHomebrewTapToBrewTap tapPath;
+        trusted = true;
+      }) (builtins.attrNames config.nix-homebrew.taps);
     };
   in
   {
