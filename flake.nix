@@ -45,6 +45,44 @@
         (final: prev: {
           commitizen = prev.commitizen.overridePythonAttrs (_: { doCheck = false; });
         })
+        # pipx's test suite fails to collect under python3.14 (pytest parametrize
+        # mismatch in tests/test_inject.py); skip its checks rather than waiting on a fix.
+        (final: prev: {
+          pipx = prev.pipx.overridePythonAttrs (_: { doCheck = false; });
+        })
+        # poetry 2.4.1 in this nixpkgs pin has 3 failing executor tests
+        # (tests/installation/test_executor.py) -- fails on both python3.13 and 3.14, so
+        # it's a broken test, not a version issue. poetry's package.nix builds its own
+        # internal python set that re-defines `poetry` last, so overlay overrides can't
+        # reach it; and withPlugins pulls poetry-plugin-export, which build-depends on the
+        # unwrapped poetry *with* checks. So we hand-roll withPlugins here: take poetry's
+        # own internal python, disable checks on unwrapped poetry, rebuild the export
+        # plugin against that, and re-assemble the application with the plugin baked in.
+        # home.nix then uses plain `poetry` (no .withPlugins call).
+        (final: prev:
+          let
+            py = prev.poetry.python;
+            poetryNoCheck = py.pkgs.poetry.overridePythonAttrs (_: { doCheck = false; });
+            # poetry-plugin-export 1.10.0 ships pyproject version 1.9.0 (upstream forgot
+            # to bump), so the wheel METADATA mismatches the derivation version. nixpkgs
+            # normally never builds this plugin, so the bug is latent; skip the check.
+            exportPlugin = (prev.poetry.plugins.poetry-plugin-export.override {
+              poetry = poetryNoCheck;
+            }).overridePythonAttrs (_: {
+              doCheck = false;
+              dontCheckPythonMetadata = true;
+            });
+          in {
+            poetry = py.pkgs.toPythonApplication (poetryNoCheck.overridePythonAttrs (old: {
+              dependencies = old.dependencies ++ [ exportPlugin ];
+              doCheck = false;
+              # Propagating dependencies leaks them through $PYTHONPATH (breaks nix-shell);
+              # upstream withPlugins strips this, so we mirror that.
+              postFixup = ''
+                rm -f $out/nix-support/propagated-build-inputs
+              '';
+            }));
+          })
         # lima fails to compile from source on this machine: its Go build crashes
         # nixpkgs' cctools linker (Trace/BPT trap) on the current toolchain. Use
         # upstream's prebuilt, already-entitlement-signed release binary instead.

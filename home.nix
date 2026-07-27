@@ -93,7 +93,7 @@
       pdm
       pipenv
       pipx
-      (poetry.withPlugins (p: [ p.poetry-plugin-export ]))
+      poetry # export plugin baked in via overlay (see flake.nix)
       pyright
       tenv
       uv
@@ -159,6 +159,7 @@
     # GUI applications
     guiApps = [
       aerospace
+      firefox
       kitty
       monitorcontrol
       raycast
