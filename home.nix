@@ -113,6 +113,7 @@
       gh-dash
       gitmoji-cli
       neovim
+      opencode
       pnpm
       prettierd
       supabase-cli
@@ -159,7 +160,6 @@
     # GUI applications
     guiApps = [
       aerospace
-      firefox
       kitty
       monitorcontrol
       raycast

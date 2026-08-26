@@ -131,7 +131,7 @@
           "dotenvx" # Not in nixpkgs
         ];
         casks = [
-          # macOS apps not in nixpkgs go here
+          "firefox" # nix-built firefox gets re-signed, breaking macOS TCC screen-share permission
         ];
       };
 
