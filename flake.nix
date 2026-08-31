@@ -27,7 +27,7 @@
       flake = false;
     };
     homebrew-databricks = {
-      url = "github:databricks/homebrew-tap";
+      url = "git+https://github.com/databricks/homebrew-tap";
       flake = false;
     };
   };
