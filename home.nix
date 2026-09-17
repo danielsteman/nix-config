@@ -65,6 +65,7 @@
       bun
       deno
       go
+      jdk17
       lua
       nodejs_24
       postgresql_16
@@ -187,4 +188,9 @@
     ++ systemUtils
     ++ guiApps
     ++ misc;
+
+  # PySpark and other JVM tooling need a real JDK; macOS ships only a stub at /usr/bin/java.
+  home.sessionVariables = {
+    JAVA_HOME = pkgs.jdk17.home;
+  };
 }
