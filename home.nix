@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -124,6 +124,7 @@
     # Git & version control
     gitTools = [
       act
+      delta
       jira-cli-go
     ];
 
