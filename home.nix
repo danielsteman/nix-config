@@ -151,6 +151,7 @@
       htop
       jq
       nmap
+      pspg
       tree
       wget
       websocat
