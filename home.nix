@@ -173,10 +173,12 @@
       cmatrix
       cook-cli
       goose-cli
+      mpv
       ngrok
       ollama
       wimlib
       yarn
+      yt-dlp
     ];
   in
     cloud
