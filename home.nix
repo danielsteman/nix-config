@@ -180,6 +180,7 @@
   in
     cloud
     ++ languages
+    ++ nix
     ++ haskell
     ++ python
     ++ devTools
