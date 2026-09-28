@@ -130,9 +130,7 @@
 
     # Container & orchestration
     containers = [
-      colima
       docker
-      lima
       process-compose
     ];
 

@@ -156,6 +156,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-claude": {
+      "locked": {
+        "lastModified": 1790096840,
+        "narHash": "sha256-JNtzjH763OWWbl09TTtI2+DuNKtAflqlWEHJ7b6F57Q=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5ee9f0ecf9ea4ef788544118d184a5d37baf5eee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5ee9f0ecf9ea4ef788544118d184a5d37baf5eee",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
@@ -165,7 +181,8 @@
         "homebrew-dotenvx": "homebrew-dotenvx",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-claude": "nixpkgs-claude"
       }
     }
   },
