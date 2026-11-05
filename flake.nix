@@ -93,6 +93,17 @@
               '';
             }));
           })
+        # Need node >=24.22.1 but nixpkgs (incl. master) is still on 24.21.0; bump the
+        # source ourselves. Builds from source (no cache hit) -- drop once nixpkgs catches up.
+        (final: prev: {
+          nodejs_24 = prev.nodejs_24.overrideAttrs (_: rec {
+            version = "24.22.1";
+            src = prev.fetchurl {
+              url = "https://nodejs.org/dist/v${version}/node-v${version}.tar.xz";
+              hash = "sha256-T1N5eWKAza6wwvNY/QS2oWzE+336g7WoyRqdljtDUjE=";
+            };
+          });
+        })
       ];
 
       environment.systemPackages = with pkgs; [ dnsmasq ];

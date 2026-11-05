@@ -19,6 +19,10 @@
   # When using home-manager as a nix-darwin module, programs.home-manager.enable
   # is not needed - it's automatically enabled
 
+  # Copy .app bundles instead of symlinking them so Spotlight can index them
+  targets.darwin.linkApps.enable = false;
+  targets.darwin.copyApps.enable = true;
+
   # Git configuration
   programs.git = {
     enable = true;
@@ -146,6 +150,7 @@
     systemUtils = [
       ansible
       cue
+      curl
       htop
       jq
       nmap
