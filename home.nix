@@ -168,7 +168,6 @@
       aerospace
       kitty
       monitorcontrol
-      raycast
     ];
 
     # Other tools

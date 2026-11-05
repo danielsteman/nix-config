@@ -122,6 +122,7 @@
         ];
         casks = [
           "firefox" # nix-built firefox gets re-signed, breaking macOS TCC screen-share permission
+          "raycast" # casks land in /Applications; home-manager apps only go to ~/Applications
         ];
       };
 
