@@ -4,7 +4,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     # claude-code lands on master days before it reaches nixpkgs-unstable; pin a master
     # commit just for that one package (see the overlay in `configuration`).
-    nixpkgs-claude.url = "github:NixOS/nixpkgs/5ee9f0ecf9ea4ef788544118d184a5d37baf5eee";
+    nixpkgs-claude.url = "github:NixOS/nixpkgs/dbf89bf9e314b856641ddb24d5bd0347ae9b2788";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
