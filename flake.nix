@@ -181,6 +181,17 @@
           ShowPathbar = true;
           FXEnableExtensionChangeWarning = false;
         };
+
+        # Firefox (brew cask) reads enterprise policies from this plist on macOS.
+        # Unlike distribution/policies.json inside the .app, it survives cask updates.
+        # Full path because CustomSystemPreferences runs `defaults write` as root.
+        CustomSystemPreferences."/Library/Preferences/org.mozilla.firefox" = {
+          EnterprisePoliciesEnabled = true;
+          Preferences = {
+            # Open new tabs (Cmd+T) next to the active tab instead of at the end.
+            "browser.tabs.insertAfterCurrent" = { Value = true; Status = "locked"; };
+          };
+        };
       };
 
       system.keyboard.enableKeyMapping = true;
